@@ -1,0 +1,42 @@
+/* carousel.css */
+
+.carousel .control-dots {
+  display: none !important;
+}
+
+.carousel .carousel-status {
+  display: none !important;
+}
+
+.carousel .slide img {
+  cursor: pointer;
+}
+
+.carousel-slide {
+  cursor: pointer;
+
+
+   /* Added cursor pointer for the entire slide */
+}
+
+.carousel-image {
+  width: 50px; /* Set width for images */
+  height: 180px; /* Set height for images */
+  object-fit: cover; /* Maintain aspect ratio while filling the area */
+  border-radius: 8px; /* Optional: Add some rounding to the corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visual */
+}
+
+@media screen and (max-width: 450px) {
+  .carousel-slide {
+    cursor: pointer; 
+    /* Added cursor pointer for the entire slide */
+  }
+
+  .carousel-image {
+    width: 60px; /* Set width for images */
+    height: 80px; /* Set height for images */
+    border-radius: 8px; /* Optional: Add some rounding to the corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visual */
+  }
+}
