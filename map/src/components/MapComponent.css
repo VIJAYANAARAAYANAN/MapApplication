@@ -194,18 +194,15 @@
   }
   .map-container-wrapper {
     display: flex;
-    border-radius: 20px;
     position: relative;
     flex-direction: column;
-    width: 100%;
-    margin-left: 2%;
+    width: auto;
   }
   
   .map-container {
     height: 500px;
-    width: 101%;
+    width: auto;
     margin-top: 3px;
-    border-radius: 10px;
     padding-left: 0;
   }
 
@@ -324,7 +321,7 @@
     border: 2px solid #1F51FF;
     width: fit-content;
     border-radius: 20px;
-    transition: color 0.3s ease; /* Smooth transition for color change */
+    transition: color 0.3s ease; 
   }
   .see-more-container {
     display: flex; 
@@ -332,10 +329,9 @@
     margin-bottom: 10px;
 }
 .see-more-container a {
-  font-size: 20px;
-  padding: 7px;
+  font-size: 17px;
+  padding: 4px;
   font-family: "Noto Sans", sans-serif;
-
 }
 
 
