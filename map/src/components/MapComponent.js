@@ -64,10 +64,11 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
         <a href={seller.seller_url} target="_blank" rel="noopener noreferrer">
           {seller.seller_name}
           <span style={{color: 'grey',fontSize:15}}>
-          {seller.distance !== undefined && ` (${seller.distance.toFixed(2)} km)`}
+            {seller.distance !== undefined && ` (${seller.distance.toFixed(2)} km)`}
           </span>
         </a>
       </h2>
+      <p1>({seller.category_name})</p1> {/* Displaying the category */}
       <p>Total Products: {seller.product_count}</p>
       <p>City: {seller.seller_city}</p>
       <div className="image-grid">

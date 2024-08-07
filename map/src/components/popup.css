@@ -78,10 +78,16 @@
     }
     .outside-popup h2 {
         text-decoration: none;
-    
         color: #1f51ff;
-        padding-bottom: 10px;
+        padding-bottom: 0px;
         margin-bottom: 0;
+    }
+    .outside-popup p1{
+        font-size: 17px;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        font-family: "Noto Sans", sans-serif;
+        font-weight: 500px;
     }
     
     .outside-popup h2 a {

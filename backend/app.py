@@ -38,18 +38,19 @@ def get_sellers():
     try:
         cursor = connection.cursor(dictionary=True)
         
-        # Updated query to include seller_pincode and seller_city
+        # Updated query to include only one category per seller
         query = """
         SELECT 
             seller_id,
             seller_name,
+            (SELECT category_name FROM cartesian_catalog_data_flat AS sub WHERE sub.seller_id = main.seller_id LIMIT 1) AS category_name,
             COUNT(*) AS product_count,
             MAX(seller_lat_long) AS seller_lat_long,
             MAX(seller_pincode) AS seller_pincode,
             MAX(seller_city) AS seller_city,
             GROUP_CONCAT(product_image_link ORDER BY product_id SEPARATOR '|') AS product_images,
             MAX(seller_url) AS seller_url
-        FROM cartesian_catalog_data_flat
+        FROM cartesian_catalog_data_flat AS main
         GROUP BY seller_id, seller_name
         """
         cursor.execute(query)

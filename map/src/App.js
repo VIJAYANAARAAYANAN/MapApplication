@@ -20,7 +20,7 @@ function App() {
 
   return (
     <div>
-      <h1 style={{ fontWeight: 700, fontSize: '25px', color: '#1F51FF',paddingLeft:15, fontFamily:'"Noto Sans", sans-serif'  }}>Seller Locations</h1>
+      <h1 style={{ fontWeight: 700, fontSize: '20px', color: '#1F51FF',paddingLeft:15, fontFamily:'"Noto Sans", sans-serif'  }}>Seller Locations</h1>
       <MapComponent customers={customers} />
     </div>
   );
