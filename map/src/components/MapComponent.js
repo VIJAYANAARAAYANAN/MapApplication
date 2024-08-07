@@ -9,7 +9,7 @@ import { CarouselComponent } from './CarouselHelper';
 import './MapComponent.css';
 import './popup.css';
 import UserLocationMarker from './UserLocationMarker'; // Import the new component
-
+import FilterComponent from './FilterComponent';
 // Define custom icons
 const customIcon = L.icon({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -68,9 +68,7 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
           </span>
         </a>
       </h2>
-      <p1>({seller.category_name})</p1> {/* Displaying the category */}
-      <p>Total Products: {seller.product_count}</p>
-      <p>City: {seller.seller_city}</p>
+      <p1>({seller.category_name}) - {seller.seller_city} {}</p1>
       <div className="image-grid">
         {imageRows}
       </div>
@@ -219,14 +217,30 @@ const MapComponent = ({ customers }) => {
   const handleClosePopup = () => {
     setSelectedSeller(null);
   };
+  // // FILTER FUNCTION:
+  // const handleSearch = (searchTerm) => {
+  //   // Implement the search functionality here
+  //   console.log("Search term:", searchTerm);
+  // };
+
+  // const handleFilterChange = (filters) => {
+  //   // Implement the filter change functionality here
+  //   console.log("Selected filters:", filters);
+  // };
+
+  // const applyFilters = () => {
+  //   // Implement the apply filters functionality here
+  //   console.log("Filters applied");
+  // };
 
   return (
+    
     <div className="map-container-wrapper">
+      <FilterComponent/> 
+      <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
       <button className='showbutton' onClick={toggleNearby}>
         {showNearby ? 'Show All Sellers' : 'Show Sellers Close to Me'}
       </button>
-
-      <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <ClusteringMarkers customers={customers} userLocation={userLocation} showNearby={showNearby} onMarkerClick={handleMarkerClick} />
         <MapViewAdjuster showNearby={showNearby} userLocation={userLocation} />

@@ -1,0 +1,97 @@
+@media screen and (max-width: 450px) {
+    .filtered-sellers-popup {
+        position: absolute; /* Absolute positioning to avoid affecting other components */
+     /* Adjust as needed */
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        max-height: 300px; /* Adjust height to fit your design */
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow-y: auto; /* Enable scrolling if content exceeds max-height */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional for better appearance */
+        z-index: 1000;/* Ensure it appears above other components */
+    }
+
+    .dropboxes{
+        width: auto;
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        justify-content: space-around;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .filter-input {
+        width:90%;
+        display: flex;
+        margin-left: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 7px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    .filter-select {
+        margin-bottom: 10px;
+        width: 50%;
+        font-size: 15px;
+    }
+
+    .filter-button {
+        width: auto;
+        padding: 10px;
+        background-color: #1f51ff; /* Match the color scheme */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        margin-left: 10px;
+        font-family: "Noto Sans", sans-serif;
+        font-weight: 500;
+        margin-bottom: 5px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .filter-button:hover {
+        background-color: #1a44d4; /* Slightly darker shade for hover effect */
+    }
+    .seller-details {
+        padding: 5px;
+    }
+    .popup-close-button {
+        margin-top: 0px;
+        background-color: #FF3B3F;
+        color: white;
+    }
+    .seller-details h2{
+        text-decoration: none;
+        color: #1f51ff;
+        padding-bottom: 0px;
+        margin-bottom: 0;
+        width: 88%;
+     
+    }
+
+    .seller-details h2 a{
+        display: inline-block;
+        text-decoration: none;
+        color: inherit;
+        width: 89%;
+        font-size: 23px;
+        font-family: "Noto Sans", sans-serif;
+    }
+    .seller-details p{
+        font-weight: 500;
+        font-size: 18px;
+        padding-bottom: 1px;
+        color: #1f1e1e;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-family: "Noto Sans", sans-serif;
+    }
+}

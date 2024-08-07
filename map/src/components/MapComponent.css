@@ -162,11 +162,11 @@
 
 @media screen and (max-width: 450px) {
   .showbutton{
-      font-size:15px;
+      font-size:13px;
       font-weight: normal;
-      padding-top: 10px;
       margin: 2px;
       font-family: "Noto Sans", sans-serif;
+      padding: 8px;
   }
   .marker-cluster {
     transition: transform 0.5s ease-in-out;
@@ -197,10 +197,11 @@
     position: relative;
     flex-direction: column;
     width: auto;
+    height: 100%;
   }
   
   .map-container {
-    height: 500px;
+    height: 100%;
     width: auto;
     margin-top: 3px;
     padding-left: 0;

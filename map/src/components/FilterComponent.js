@@ -1,49 +1,77 @@
 import React, { useState } from 'react';
+import Select from 'react-select';
+import './css/FilterComponent.css';
 
-const FilterComponent = ({ onSearch, onFilterChange }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [category, setCategory] = useState('');
-  const [location, setLocation] = useState('');
+const cities = [
+  'Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Chennai', 'Hyderabad', 
+  'Ahmedabad', 'Pune', 'Jaipur', 'Surat', 'Lucknow', 'Kanpur', 
+  'Nagpur', 'Indore', 'Thane', 'Bhopal', 'Visakhapatnam', 
+  'Pimpri-Chinchwad', 'Patna', 'Vadodara', 'Ghaziabad', 'Ludhiana', 
+  'Agra', 'Nashik', 'Faridabad', 'Meerut', 'Rajkot', 'Kalyan-Dombivli', 
+  'Vijayawada', 'Aurangabad', 'Jabalpur', 'Amritsar', 'Shimla', 
+  'Dehradun', 'Ranchi', 'Bilaspur', 'Gwalior', 'Mysore', 
+  'Coimbatore', 'Trivandrum', 'Kochi', 'Chandigarh', 'Udaipur', 
+  'Jodhpur', 'Srinagar'
+];
 
-  const handleSearch = () => {
-    onSearch(searchQuery);
+const categories = [
+  'Electronics', 'Clothing', 'Food', 'Books', 'Furniture', 'Tops'
+];
+
+const FilterComponent = ({ onSearch, onFilterChange, onApplyFilters }) => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [searchText, setSearchText] = useState('');
+
+  const handleCategoryChange = (selectedOption) => {
+    setSelectedCategory(selectedOption);
   };
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-    onFilterChange({ category: e.target.value, location });
+  const handleLocationChange = (selectedOption) => {
+    setSelectedLocation(selectedOption);
   };
 
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
-    onFilterChange({ category, location: e.target.value });
+  const handleApplyFilters = () => {
+    const filters = {
+      category: selectedCategory ? selectedCategory.value : '',
+      location: selectedLocation ? selectedLocation.value : ''
+    };
+    console.log("Filters to apply:", filters);
+    onFilterChange(filters);
+    onSearch(searchText);
+    onApplyFilters(filters); // Apply the filters
   };
 
   return (
-    <div className="filter-component">
+    <div className="filter-container">
       <input
         type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search..."
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        className="filter-input"
       />
-      <button onClick={handleSearch}>Search</button>
-      <br />
-      <select value={category} onChange={handleCategoryChange}>
-        <option value="">All Categories</option>
-        <option value="electronics">Electronics</option>
-        <option value="fashion">Fashion</option>
-        <option value="grocery">Grocery</option>
-        {/* Add more categories as needed */}
-      </select>
-      <br />
-      <select value={location} onChange={handleLocationChange}>
-        <option value="">All Locations</option>
-        <option value="city1">City 1</option>
-        <option value="city2">City 2</option>
-        <option value="city3">City 3</option>
-        {/* Add more locations as needed */}
-      </select>
+      <div className="dropboxes">
+        <Select
+          options={categories.map(category => ({ value: category, label: category }))}
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          placeholder="Select Category"
+          className="filter-select"
+          isClearable
+        />
+        <Select
+          options={cities.map(city => ({ value: city, label: city }))}
+          value={selectedLocation}
+          onChange={handleLocationChange}
+          placeholder="Select City"
+          className="filter-select"
+          isClearable
+        />
+      </div>
+      <button onClick={handleApplyFilters} className="filter-button">
+        Apply Filters
+      </button>
     </div>
   );
 };
