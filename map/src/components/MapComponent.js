@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import { CarouselComponent } from './CarouselHelper';
 import './MapComponent.css';
 import './popup.css';
+import UserLocationMarker from './UserLocationMarker'; // Import the new component
 
 // Define custom icons
 const customIcon = L.icon({
@@ -17,7 +18,6 @@ const customIcon = L.icon({
   iconAnchor: [12, 36],
   popupAnchor: [0, -36]
 });
-
 
 // Define custom active icon
 const customActiveIcon = L.icon({
@@ -30,12 +30,12 @@ const customActiveIcon = L.icon({
 
 // Calculate distance between two points
 const getDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371; 
+  const R = 6371; // Radius of the Earth in kilometers
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLon = (lon2 - lon1) * (Math.PI / 180);
   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 };
@@ -60,15 +60,21 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
       <button className="popup-close-button" onClick={onClose}>
         X
       </button>
-      <h2><a href={seller.seller_url} target='"_blank' rel="noopener noreferrer">{seller.seller_name}</a></h2>
+      <h2>
+        <a href={seller.seller_url} target="_blank" rel="noopener noreferrer">
+          {seller.seller_name}
+          <span style={{color: 'grey',fontSize:15}}>
+          {seller.distance !== undefined && ` (${seller.distance.toFixed(2)} km)`}
+          </span>
+        </a>
+      </h2>
       <p>Total Products: {seller.product_count}</p>
       <p>City: {seller.seller_city}</p>
-      <p>Pincode: {seller.seller_pincode}</p>
       <div className="image-grid">
         {imageRows}
       </div>
       <div className="see-more-container">
-      <a href={seller.seller_url} target="_blank" rel="noopener noreferrer" className="see-more-link">See More</a>
+        <a href={seller.seller_url} target="_blank" rel="noopener noreferrer" className="see-more-link">See More</a>
       </div>
     </div>
   );
@@ -88,29 +94,34 @@ const ClusteringMarkers = ({ customers, userLocation, showNearby, onMarkerClick 
 
     const filteredCustomers = showNearby && userLocation
       ? customers.filter(customer => {
-          const [lat, lon] = customer.seller_lat_long.split(',').map(coord => parseFloat(coord));
-          const distance = getDistance(userLocation.lat, userLocation.lon, lat, lon);
-          return distance <= 50;
-        })
+        const [lat, lon] = customer.seller_lat_long.split(',').map(coord => parseFloat(coord));
+        const distance = getDistance(userLocation.lat, userLocation.lon, lat, lon);
+        return distance <= 50;
+      })
       : customers;
 
     filteredCustomers.forEach((customer, index) => {
       const [lat, lon] = customer.seller_lat_long.split(',').map(coord => parseFloat(coord));
+
+      // Validate latitude and longitude
+      if (isNaN(lat) || isNaN(lon)) {
+        console.error(`Invalid LatLng object for customer ${customer.seller_name}: (${lat}, ${lon})`);
+        return;
+      }
+
       const images = Array.isArray(customer.product_images)
         ? customer.product_images.filter(url => url.startsWith('http')).slice(0, 7)
         : [];
 
       const markerIcon = activeMarkerId === index ? customActiveIcon : customIcon; // Use active icon if selected
 
-    
       const marker = L.marker([lat, lon], { icon: markerIcon })
-      .bindPopup(
-        `<div class="popup-content">
-           <a href="${customer.seller_url}" target="_blank" class="popup-seller-name">${customer.seller_name}</a><br />
-           
-           <div id="carousel-${lat}-${lon}" class="popup-carousel"></div>
-         </div>`
-      );
+        .bindPopup(
+          `<div class="popup-content">
+            <a href="${customer.seller_url}" target="_blank" class="popup-seller-name">${customer.seller_name}</a><br />
+            <div id="carousel-${lat}-${lon}" class="popup-carousel"></div>
+          </div>`
+        );
 
       markers.addLayer(marker);
 
@@ -195,7 +206,13 @@ const MapComponent = ({ customers }) => {
   };
 
   const handleMarkerClick = (seller) => {
-    setSelectedSeller(seller);
+    if (userLocation) {
+      const [lat, lon] = seller.seller_lat_long.split(',').map(coord => parseFloat(coord));
+      const distance = getDistance(userLocation.lat, userLocation.lon, lat, lon);
+      setSelectedSeller({ ...seller, distance });
+    } else {
+      setSelectedSeller(seller);
+    }
   };
 
   const handleClosePopup = () => {
@@ -207,20 +224,21 @@ const MapComponent = ({ customers }) => {
       <button className='showbutton' onClick={toggleNearby}>
         {showNearby ? 'Show All Sellers' : 'Show Sellers Close to Me'}
       </button>
-  
+
       <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <ClusteringMarkers customers={customers} userLocation={userLocation} showNearby={showNearby} onMarkerClick={handleMarkerClick} />
         <MapViewAdjuster showNearby={showNearby} userLocation={userLocation} />
+        {userLocation && <UserLocationMarker userLocation={userLocation} />} {/* Add UserLocationMarker here */}
       </MapContainer>
-  
+
       <div className='secondpart'>
         {selectedSeller && (
           <OutsidePopupComponent seller={selectedSeller} onClose={handleClosePopup} />
         )}
       </div>
     </div>
-  );  
+  );
 };
 
 export default MapComponent;

@@ -149,13 +149,13 @@
   top: 10px;
   right: 10px;
   z-index: 1000; 
-  background-color: #1F51FF; /* Use hyphen instead of camel case for CSS */
+  background-color: #1F51FF; 
   color: white;
   border: none;
-  border-radius: 8px; /* Use hyphen instead of camel case for CSS */
+  border-radius: 8px; 
   padding: 10px 15px;
   cursor: pointer;
-  font-size: 16px; /* Use hyphen instead of camel case for CSS */
+  font-size: 16px; 
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
@@ -165,8 +165,8 @@
       font-size:15px;
       font-weight: normal;
       padding-top: 10px;
-      margin: 5px;
-      
+      margin: 2px;
+      font-family: "Noto Sans", sans-serif;
   }
   .marker-cluster {
     transition: transform 0.5s ease-in-out;
@@ -202,10 +202,11 @@
   }
   
   .map-container {
-    height: 20px;
+    height: 500px;
     width: 101%;
     margin-top: 3px;
     border-radius: 10px;
+    padding-left: 0;
   }
 
   .leaflet-popup {
@@ -237,9 +238,7 @@
     text-align: left;
     align-items: flex-start;
     justify-content: flex-start;
-  
-  
-  
+    display: none;
   }
 
 
@@ -325,16 +324,17 @@
     border: 2px solid #1F51FF;
     width: fit-content;
     border-radius: 20px;
-    margin-bottom: 10px;
     transition: color 0.3s ease; /* Smooth transition for color change */
   }
   .see-more-container {
     display: flex; 
     justify-content: center; 
+    margin-bottom: 10px;
 }
 .see-more-container a {
   font-size: 20px;
   padding: 7px;
+  font-family: "Noto Sans", sans-serif;
 
 }
 
@@ -347,8 +347,8 @@
   }
   .leaflet-popup-content-wrapper {
     padding: 10px; 
-    width: fit-content
-    ;  
+    width: fit-content;
+    display: none;  
     
   }
   
@@ -356,7 +356,7 @@
     font-size: 24px; 
     font-weight: bold;
     width: 100px;
-    
+    display: none;  
   }
   
   .leaflet-popup-content a {

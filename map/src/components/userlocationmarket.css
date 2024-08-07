@@ -1,0 +1,23 @@
+@media screen and (max-width: 450px) {
+    .leaflet-popup-content-wrapper {
+        padding: 10px; 
+        width: fit-content;
+      
+        
+      }
+      
+      .leaflet-popup-content {
+        font-size: 24px; 
+        font-weight: bold;
+        width: 100px;
+ 
+      }
+      
+      .leaflet-popup-content a {
+        font-size: 14px; 
+        margin-top: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        line-height: 0ch;
+      }
+}

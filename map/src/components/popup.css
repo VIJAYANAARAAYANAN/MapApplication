@@ -87,28 +87,27 @@
         color: inherit; 
         width: 89%;
         font-size: 23px;
+        font-family: "Noto Sans", sans-serif;
     }
     .outside-popup p{
         font-weight: 500;
-        font-size: 20px;
+        font-size: 18px;
         padding-bottom: 1px;
+        color: #1f1e1e;
         margin-top: 0;
         margin-bottom: 0;
+        font-family: "Noto Sans", sans-serif;
     }
 
     .map-container-wrapper {
         display: flex;
         flex-direction: column;
-        height: 100vh; /* Full height for container */
+        height: 100vh;
     }
-
-    .map-container {
-        flex: 1; /* Take up remaining space */
-        height: auto; /* Adjust height as needed */
-    }
+  
     .popup-image {
-        width: 120px;
-        height: 130px;
+        width: 100px;
+        height: 110px;
         border: 1px solid grey;
         border-radius: 9px;
         
@@ -127,7 +126,6 @@
     .image-row {
         display: flex;
         gap: 10px;
-        padding-bottom:10px;
     }
     
 
