@@ -9,7 +9,7 @@ import { CarouselComponent } from './CarouselHelper';
 import './MapComponent.css';
 import './popup.css';
 import UserLocationMarker from './UserLocationMarker'; // Import the new component
-import FilterComponent from './FilterComponent';
+//import FilterComponent from './FilterComponent';
 // Define custom icons
 const customIcon = L.icon({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -55,6 +55,10 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
     );
   }
 
+  // Split categories and take the first two
+  const categoriesArray = seller.category_name.split(',').map(category => category.trim());
+  const displayedCategories = categoriesArray.slice(0, 2);
+
   return (
     <div className="outside-popup">
       <button className="popup-close-button" onClick={onClose}>
@@ -63,12 +67,14 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
       <h2>
         <a href={seller.seller_url} target="_blank" rel="noopener noreferrer">
           {seller.seller_name}
-          <span style={{color: 'grey',fontSize:15}}>
+          <span style={{color: 'grey', fontSize: 15}}>
             {seller.distance !== undefined && ` (${seller.distance.toFixed(2)} km)`}
           </span>
         </a>
       </h2>
-      <p1>({seller.category_name}) - {seller.seller_city} {}</p1>
+      <p>
+        ({displayedCategories.join(', ')}{displayedCategories.length < categoriesArray.length && '...'}) - {seller.seller_city}
+      </p>
       <div className="image-grid">
         {imageRows}
       </div>
@@ -217,26 +223,11 @@ const MapComponent = ({ customers }) => {
   const handleClosePopup = () => {
     setSelectedSeller(null);
   };
-  // // FILTER FUNCTION:
-  // const handleSearch = (searchTerm) => {
-  //   // Implement the search functionality here
-  //   console.log("Search term:", searchTerm);
-  // };
-
-  // const handleFilterChange = (filters) => {
-  //   // Implement the filter change functionality here
-  //   console.log("Selected filters:", filters);
-  // };
-
-  // const applyFilters = () => {
-  //   // Implement the apply filters functionality here
-  //   console.log("Filters applied");
-  // };
-
+ 
   return (
     
     <div className="map-container-wrapper">
-      <FilterComponent/> 
+      {/* <FilterComponent/>  */}
       <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
       <button className='showbutton' onClick={toggleNearby}>
         {showNearby ? 'Show All Sellers' : 'Show Sellers Close to Me'}
@@ -255,5 +246,6 @@ const MapComponent = ({ customers }) => {
     </div>
   );
 };
+
 
 export default MapComponent;

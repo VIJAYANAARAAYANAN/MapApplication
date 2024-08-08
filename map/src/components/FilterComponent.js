@@ -1,27 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
+import axios from 'axios';
 import './css/FilterComponent.css';
 
-const cities = [
-  'Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Chennai', 'Hyderabad', 
-  'Ahmedabad', 'Pune', 'Jaipur', 'Surat', 'Lucknow', 'Kanpur', 
-  'Nagpur', 'Indore', 'Thane', 'Bhopal', 'Visakhapatnam', 
-  'Pimpri-Chinchwad', 'Patna', 'Vadodara', 'Ghaziabad', 'Ludhiana', 
-  'Agra', 'Nashik', 'Faridabad', 'Meerut', 'Rajkot', 'Kalyan-Dombivli', 
-  'Vijayawada', 'Aurangabad', 'Jabalpur', 'Amritsar', 'Shimla', 
-  'Dehradun', 'Ranchi', 'Bilaspur', 'Gwalior', 'Mysore', 
-  'Coimbatore', 'Trivandrum', 'Kochi', 'Chandigarh', 'Udaipur', 
-  'Jodhpur', 'Srinagar'
-];
-
-const categories = [
-  'Electronics', 'Clothing', 'Food', 'Books', 'Furniture', 'Tops'
-];
-
-const FilterComponent = ({ onSearch, onFilterChange, onApplyFilters }) => {
+const FilterComponent = ({ customers, onFilterChange }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [searchText, setSearchText] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [filtersApplied, setFiltersApplied] = useState(false);
+
+  // Fetch categories and cities from backend
+  const fetchCategoriesAndCities = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/dashboard/api');
+      const data = response.data;
+      
+      // Split categories and remove duplicates
+      const allCategories = data.flatMap(item => 
+        item.category_name.split(',').map(category => category.trim())
+      );
+      const uniqueCategories = [...new Set(allCategories)];
+
+      // Fetch unique cities
+      const uniqueCities = [...new Set(data.map(item => item.seller_city).filter(Boolean))];
+
+      setCategories(uniqueCategories.map(category => ({ value: category, label: category })));
+      setCities(uniqueCities.map(city => ({ value: city, label: city })));
+    } catch (error) {
+      console.error('Error fetching categories and cities:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoriesAndCities();
+  }, []);
 
   const handleCategoryChange = (selectedOption) => {
     setSelectedCategory(selectedOption);
@@ -32,45 +45,58 @@ const FilterComponent = ({ onSearch, onFilterChange, onApplyFilters }) => {
   };
 
   const handleApplyFilters = () => {
-    const filters = {
-      category: selectedCategory ? selectedCategory.value : '',
-      location: selectedLocation ? selectedLocation.value : ''
-    };
-    console.log("Filters to apply:", filters);
-    onFilterChange(filters);
-    onSearch(searchText);
-    onApplyFilters(filters); // Apply the filters
+    if (filtersApplied) {
+      // Remove filters
+      setSelectedCategory(null);
+      setSelectedLocation(null);
+      onFilterChange(customers); // Reset to all customers
+    } else {
+      // Apply filters
+      const filters = {
+        category: selectedCategory ? selectedCategory.value : '',
+        location: selectedLocation ? selectedLocation.value : ''
+      };
+
+      const filtered = customers.filter((seller) => {
+        const matchesCategory = filters.category ? seller.category_name.split(',').map(cat => cat.trim()).includes(filters.category) : true;
+        const matchesLocation = filters.location ? seller.seller_city === filters.location : true;
+        return matchesCategory && matchesLocation;
+      });
+
+      console.log('Filters to apply:', filters);
+      console.log('Filtered sellers:', filtered);
+
+      onFilterChange(filtered);
+    }
+    setFiltersApplied(!filtersApplied); 
   };
 
   return (
     <div className="filter-container">
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-        className="filter-input"
-      />
       <div className="dropboxes">
         <Select
-          options={categories.map(category => ({ value: category, label: category }))}
+          options={categories}
           value={selectedCategory}
           onChange={handleCategoryChange}
-          placeholder="Select Category"
+          placeholder="Category"
           className="filter-select"
           isClearable
         />
         <Select
-          options={cities.map(city => ({ value: city, label: city }))}
+          options={cities}
           value={selectedLocation}
           onChange={handleLocationChange}
-          placeholder="Select City"
+          placeholder="City"
           className="filter-select"
           isClearable
         />
       </div>
-      <button onClick={handleApplyFilters} className="filter-button">
-        Apply Filters
+      <button
+        onClick={handleApplyFilters}
+        className="filter-button"
+        disabled={!selectedCategory && !selectedLocation} // Disable button if no data is entered
+      >
+        {filtersApplied ? 'Remove Filters' : 'Apply Filters'}
       </button>
     </div>
   );

@@ -9,7 +9,7 @@ import { CarouselComponent } from './CarouselHelper';
 import './MapComponent.css';
 import './popup.css';
 import UserLocationMarker from './UserLocationMarker'; // Import the new component
-
+//import FilterComponent from './FilterComponent';
 // Define custom icons
 const customIcon = L.icon({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -64,12 +64,11 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
         <a href={seller.seller_url} target="_blank" rel="noopener noreferrer">
           {seller.seller_name}
           <span style={{color: 'grey',fontSize:15}}>
-          {seller.distance !== undefined && ` (${seller.distance.toFixed(2)} km)`}
+            {seller.distance !== undefined && ` (${seller.distance.toFixed(2)} km)`}
           </span>
         </a>
       </h2>
-      <p>Total Products: {seller.product_count}</p>
-      <p>City: {seller.seller_city}</p>
+      <p1>({seller.category_name}) - {seller.seller_city} {}</p1>
       <div className="image-grid">
         {imageRows}
       </div>
@@ -218,14 +217,15 @@ const MapComponent = ({ customers }) => {
   const handleClosePopup = () => {
     setSelectedSeller(null);
   };
-
+ 
   return (
+    
     <div className="map-container-wrapper">
+      {/* <FilterComponent/>  */}
+      <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
       <button className='showbutton' onClick={toggleNearby}>
         {showNearby ? 'Show All Sellers' : 'Show Sellers Close to Me'}
       </button>
-
-      <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <ClusteringMarkers customers={customers} userLocation={userLocation} showNearby={showNearby} onMarkerClick={handleMarkerClick} />
         <MapViewAdjuster showNearby={showNearby} userLocation={userLocation} />
@@ -241,567 +241,96 @@ const MapComponent = ({ customers }) => {
   );
 };
 
+
 export default MapComponent;
 
 
-import { useEffect } from 'react';
-import { useMap } from 'react-leaflet';
-import L from 'leaflet';
-import '../components/userlocationmarket.css'
-const userIcon = L.icon({
-  iconRetinaUrl: require('../assets/usermarket.png'),
-  iconSize: [32, 41],
-  iconAnchor: [12, 36],
-  popupAnchor: [0, -36],
-  className: 'user-location-marker'
-});
+import React, { useState } from 'react';
+import Select from 'react-select';
+import './css/FilterComponent.css';
 
-const UserLocationMarker = ({ userLocation }) => {
-  const map = useMap();
+const cities = [
+  'Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Chennai', 'Hyderabad',
+  'Ahmedabad', 'Pune', 'Jaipur', 'Surat', 'Lucknow', 'Kanpur',
+  'Nagpur', 'Indore', 'Thane', 'Bhopal', 'Visakhapatnam',
+  'Pimpri-Chinchwad', 'Patna', 'Vadodara', 'Ghaziabad', 'Ludhiana',
+  'Agra', 'Nashik', 'Faridabad', 'Meerut', 'Rajkot', 'Kalyan-Dombivli',
+  'Vijayawada', 'Aurangabad', 'Jabalpur', 'Amritsar', 'Shimla',
+  'Dehradun', 'Ranchi', 'Bilaspur', 'Gwalior', 'Mysore',
+  'Coimbatore', 'Trivandrum', 'Kochi', 'Chandigarh', 'Udaipur',
+  'Jodhpur', 'Srinagar'
+];
 
-  useEffect(() => {
-    if (!map || !userLocation) return;
+const categories = [
+  'Electronics', 'Clothing', 'Food', 'Books', 'Furniture', 'Tops'
+];
 
-    const userMarker = L.marker([userLocation.lat, userLocation.lon], { icon: userIcon })
-      .bindPopup('You are here')
-      .addTo(map);
+const FilterComponent = ({ customers, onFilterChange }) => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [searchText, setSearchText] = useState('');
 
-    return () => {
-      map.removeLayer(userMarker);
+  const handleCategoryChange = (selectedOption) => {
+    setSelectedCategory(selectedOption);
+  };
+
+  const handleLocationChange = (selectedOption) => {
+    setSelectedLocation(selectedOption);
+  };
+
+  const handleApplyFilters = () => {
+    const filters = {
+      category: selectedCategory ? selectedCategory.value : '',
+      location: selectedLocation ? selectedLocation.value : ''
     };
-  }, [map, userLocation]);
 
-  return null;
+    const filtered = customers.filter((seller) => {
+      const matchesCategory = filters.category ? seller.category_name === filters.category : true;
+      const matchesLocation = filters.location ? seller.seller_city === filters.location : true;
+      const matchesSearchText = searchText
+        ? seller.seller_name.toLowerCase().includes(searchText.toLowerCase())
+        : true;
+      return matchesCategory && matchesLocation && matchesSearchText;
+    });
+
+    console.log('Filters to apply:', filters);
+    console.log('Filtered sellers:', filtered);
+
+    onFilterChange(filtered);
+  };
+
+  return (
+    <div className="filter-container">
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        className="filter-input"
+      />
+      <div className="dropboxes">
+        <Select
+          options={categories.map(category => ({ value: category, label: category }))}
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          placeholder="Select Category"
+          className="filter-select"
+          isClearable
+        />
+        <Select
+          options={cities.map(city => ({ value: city, label: city }))}
+          value={selectedLocation}
+          onChange={handleLocationChange}
+          placeholder="Select City"
+          className="filter-select"
+          isClearable
+        />
+      </div>
+      <button onClick={handleApplyFilters} className="filter-button">
+        Apply Filters
+      </button>
+    </div>
+  );
 };
 
-export default UserLocationMarker;
-
-UserComponent.css
-@media screen and (max-width: 450px) {
-    .leaflet-popup-content-wrapper {
-        padding: 10px; 
-        width: fit-content;
-      
-        
-      }
-      
-      .leaflet-popup-content {
-        font-size: 24px; 
-        font-weight: bold;
-        width: 100px;
- 
-      }
-      
-      .leaflet-popup-content a {
-        font-size: 14px; 
-        margin-top: 30px;
-        font-weight: bold;
-        text-decoration: none;
-        line-height: 0ch;
-      }
-}
-
-
-MapComponent.css
-/* Animation for marker clustering */
-.marker-cluster {
-  transition: transform 0.5s ease-in-out;
-}
-
-.marker-cluster div {
-  transition: transform 0.5s ease-in-out;
-}
-
-.marker-cluster {
-  transform: scale(1);
-}
-
-.marker-cluster.marker-cluster-small {
-  transform: scale(1.2);
-}
-
-
-.marker-cluster.marker-cluster-medium {
-  transform: scale(1.4);
-}
-
-.marker-cluster.marker-cluster-large {
-  transform: scale(1.6);
-}
-
-.leaflet-popup {
-  width: 300px; 
-  min-height: 200px;
-}
-
-.leaflet-popup-content-wrapper {
-  padding: 10px; 
-  
-}
-
-.leaflet-popup-content {
-  font-size: 24px; 
-  font-weight: bold;
-  
-}
-
-.leaflet-popup-content a {
-  font-size: 15px; 
-  font-weight: bold;
-  text-decoration: none;
-  line-height: 0ch;
-}
-
-.leaflet-popup-tip-container {
-  display: none; 
-}
-
-/* Carousel control arrows */
-.carousel .control-arrow {
-  background-color: rgba(0, 0, 0, 0.3); 
-}
-
-.carousel .control.control-arrow {
-  height: 40px;
-  background-color: black;
-  position: absolute;
-  top: 50%; 
-  transform: translateY(-50%); 
-  z-index: 1; 
-}
-
-.carousel.control.control-arrow {
-  height: 40px;
-  background-color: black;
-  position: absolute; 
-  top: 50%; 
-  transform: translateY(-50%); 
-  z-index: 1;
-}
-
-.map-container-wrapper {
-  display: flex;
-  border-radius: 20px;
-  position: relative;
-}
-
-.map-container {
-  height: 620px;
-  width: 70%;
-  margin-top: 5px;
-}
-
-.external-popup {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  width: 300px;
-  padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1001;
-  transition: all 0.3s ease; /* Smooth transition for appearance changes */
-}
-
-.external-popup-close-button {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color and transform */
-}
-
-.external-popup-close-button:hover {
-  background-color: #ff1a1a;
-  transform: scale(1.05); /* Slightly scale up on hover for visual feedback */
-}
-
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.popup-image {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-
-.see-more-link {
-  display: block;
-  text-align: center;
-  color: #1F51FF;
-  font-weight: bold;
-  text-decoration: none;
-  margin-top: 10px;
-  transition: color 0.3s ease; /* Smooth transition for color change */
-}
-
-.see-more-link:hover {
-  color: #0a3d7c; /* Darker color on hover for visual feedback */
-}
-
-.showbutton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1000; 
-  background-color: #1F51FF; 
-  color: white;
-  border: none;
-  border-radius: 8px; 
-  padding: 10px 15px;
-  cursor: pointer;
-  font-size: 16px; 
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-@media screen and (max-width: 450px) {
-  .showbutton{
-      font-size:15px;
-      font-weight: normal;
-      padding-top: 10px;
-      margin: 2px;
-      
-  }
-  .marker-cluster {
-    transition: transform 0.5s ease-in-out;
-  }
-  
-  .marker-cluster div {
-    transition: transform 0.5s ease-in-out;
-  }
-  
-  .marker-cluster {
-    transform: scale(1);
-  }
-  
-  .marker-cluster.marker-cluster-small {
-    transform: scale(1.2);
-  }
-  
-  
-  .marker-cluster.marker-cluster-medium {
-    transform: scale(1.4);
-  }
-  
-  .marker-cluster.marker-cluster-large {
-    transform: scale(1.6);
-  }
-  .map-container-wrapper {
-    display: flex;
-    border-radius: 20px;
-    position: relative;
-    flex-direction: column;
-    width: 100%;
-    margin-left: 2%;
-  }
-  
-  .map-container {
-    height: 500px;
-    width: 101%;
-    margin-top: 3px;
-    border-radius: 10px;
-    padding-left: 0;
-  }
-
-  .leaflet-popup {
-    width: 50px; 
-    min-height: 50px;
-  }
-  .carousel .control.control-arrow {
-    height: 20px;
-    background-color: black;
-    position: absolute;
-    top: 50%; 
-    transform: translateY(-50%); 
-    z-index: 1; 
-  }
-  
-  .carousel.control.control-arrow {
-    height: 20px;
-    background-color: black;
-    position: absolute; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    z-index: 1;
-  }
- 
-  .popup-content {
-    font-size: 5px; 
-    height: 100px;
-    width:  auto;
-    text-align: left;
-    align-items: flex-start;
-    justify-content: flex-start;
-    display: none;
-  }
-
-
-  .popup-seller-name {
-    font-size: 15px;
-    display: inline;
-    color: blue; 
-    text-decoration: none;
-    margin-top: 30px;
-    
-  }
-
-  .popup-product-count {
-    font-size: 9px; 
-  }
-
-  .popup-carousel {
-    height: 50px;
-    padding-left: -20px;
-    margin-left: -5px;
-    margin-top: 10px;
-   
-  }
-  
-  .external-popup {
-    position: fixed;
-  top: 100px;
-  right: 100px;
-  width: 100px;
-  padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1001;
-  transition: all 0.3s ease;
-  }
-  
-
-  .leaflet-popup {
-    width: 100px; 
-    min-height: auto;
-  }
-
-  .external-popup-close-button {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color and transform */
-  }
-
-  .external-popup-close-button:hover {
-    background-color: #ff1a1a;
-    transform: scale(1.05); /* Slightly scale up on hover for visual feedback */
-  }
-
-  .image-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  .popup-image {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-  }
-
-  .see-more-link {
-    display: block;
-    text-align: center;
-    align-items: center;
-    color: #1F51FF;
-    justify-content: center;
-    font-weight: bold;
-    text-decoration: none;
-    border: 2px solid #1F51FF;
-    width: fit-content;
-    border-radius: 20px;
-    transition: color 0.3s ease; /* Smooth transition for color change */
-  }
-  .see-more-container {
-    display: flex; 
-    justify-content: center; 
-    margin-bottom: 10px;
-}
-.see-more-container a {
-  font-size: 20px;
-  padding: 7px;
-
-}
-
-
-  .see-more-link:hover {
-    color: #0a3d7c; /* Darker color on hover for visual feedback */
-  }
-  .secondpart{
-    padding: 0;
-  }
-  .leaflet-popup-content-wrapper {
-    padding: 10px; 
-    width: fit-content;
-    display: none;  
-    
-  }
-  
-  .leaflet-popup-content {
-    font-size: 24px; 
-    font-weight: bold;
-    width: 100px;
-    display: none;  
-  }
-  
-  .leaflet-popup-content a {
-    font-size: 14px; 
-    margin-top: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 0ch;
-  }
-
-}
-
-
-/* popup.css */
-.outside-popup {
-    position: absolute; 
-    bottom: 10px; 
-    right: 10px; 
-    width: 26%;
-    max-height: 80vh; 
-    overflow-y: auto; 
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.popup-close-button {
-    background-color: #FF3B3F;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 14px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
-.image-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    border-radius: 5px;
-}
-
-.image-row {
-    display: flex;
-    gap: 8px;
-}
-
-.popup-image {
-    width: 70px;
-    height: 90px;
-    border-radius: 9px;
-    box-shadow: 0 4px 8px rgba(28, 22, 22, 0.2); 
-    transition: transform 0.2s; 
-}
-
-.popup-image:hover {
-    transform: scale(1.05); 
-}
-
-@media screen and (max-width: 450px) {
-    .outside-popup {
-        position: relative; /* Changed to relative */
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        margin: 0; 
-        top: auto; 
-        overflow-y: auto; 
-        background: white;
-        border: 1px solid #ddd;
-        height: auto;
-        border-radius: 8px;
-        padding: 5px;
-        padding-top: 5px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    .popup-close-button {
-        margin-top: 0px;
-        background-color: #FF3B3F;
-       
-    }
-    .outside-popup h2 {
-        text-decoration: none;
-    
-        color: #1f51ff;
-        padding-bottom: 10px;
-        margin-bottom: 0;
-    }
-    
-    .outside-popup h2 a {
-        display: inline-block;
-        text-decoration: none; 
-        color: inherit; 
-        width: 89%;
-        font-size: 23px;
-    }
-    .outside-popup p{
-        font-weight: 500;
-        font-size: 18px;
-        padding-bottom: 1px;
-        color: #1f1e1e;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    .map-container-wrapper {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-    }
-
-  
-    .popup-image {
-        width: 100px;
-        height: 110px;
-        border: 1px solid grey;
-        border-radius: 9px;
-        
-        transition: transform 0.2s; 
-    }
-    .image-grid {
-        margin-top: 10px;
-        overflow: scroll ;
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-    
-    .image-row {
-        display: flex;
-        gap: 10px;
-    }
-}
-
-  
+export default FilterComponent;

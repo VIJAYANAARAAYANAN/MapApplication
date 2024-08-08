@@ -44,11 +44,6 @@
     height: 90px;
     border-radius: 9px;
     box-shadow: 0 4px 8px rgba(28, 22, 22, 0.2); 
-    transition: transform 0.2s; 
-}
-
-.popup-image:hover {
-    transform: scale(1.05); 
 }
 
 @media screen and (max-width: 450px) {
@@ -118,8 +113,6 @@
         height: 110px;
         border: 1px solid grey;
         border-radius: 9px;
-        
-        transition: transform 0.2s; 
     }
     .image-grid {
         margin-top: 10px;
