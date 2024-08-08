@@ -17,20 +17,12 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
 
   return (
     <div className="outside-popup">
-      <button
-        className="popup-close-button"
-        onClick={onClose}
-      >
-        X
-      </button>
-      <h2>{seller.seller_name}</h2>
-      <p>Total Products: {seller.product_count}</p>
-      <p>City: {seller.seller_city}</p>
-      <p>Pincode: {seller.seller_pincode}</p>
-      <div className="image-grid">
-        {imageRows}
-      </div>
-      <a href={seller.seller_url} target="_blank" rel="noopener noreferrer" className="see-more-link">See More</a>
+        <h1>Hello</h1>
+        <h1>Hello</h1>
+        <h1>Hello</h1>
+        <h1>Hello</h1>
+        <h1>Hello</h1>
+        <h1>Hello</h1>
     </div>
   );
 };

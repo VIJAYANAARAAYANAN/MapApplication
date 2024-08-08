@@ -36,6 +36,13 @@ const FilterComponent = ({ customers, onFilterChange }) => {
     fetchCategoriesAndCities();
   }, []);
 
+  // UseEffect to reset the button to "Apply Filters" when filters change
+  useEffect(() => {
+    if (filtersApplied) {
+      setFiltersApplied(false);
+    }
+  }, [selectedCategory, selectedLocation]);
+
   const handleCategoryChange = (selectedOption) => {
     setSelectedCategory(selectedOption);
   };
@@ -68,7 +75,7 @@ const FilterComponent = ({ customers, onFilterChange }) => {
 
       onFilterChange(filtered);
     }
-    setFiltersApplied(!filtersApplied); 
+    setFiltersApplied(!filtersApplied);
   };
 
   return (
@@ -94,7 +101,7 @@ const FilterComponent = ({ customers, onFilterChange }) => {
       <button
         onClick={handleApplyFilters}
         className="filter-button"
-        disabled={!selectedCategory && !selectedLocation} // Disable button if no data is entered
+        disabled={!selectedCategory && !selectedLocation} 
       >
         {filtersApplied ? 'Remove Filters' : 'Apply Filters'}
       </button>
