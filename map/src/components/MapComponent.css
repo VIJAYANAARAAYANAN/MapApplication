@@ -81,7 +81,7 @@
 }
 
 .map-container {
-  height: 620px;
+  
   width: 70%;
   margin-top: 5px;
 }
@@ -143,13 +143,22 @@
 .see-more-link:hover {
   color: #0a3d7c; /* Darker color on hover for visual feedback */
 }
+.mapbuttons{
+  position: relative;
+  right: 0;
+  top: 0;
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  border-radius: 40px;
+  z-index: 1000;
 
+}
 .showbutton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+
   z-index: 1000; 
-  background-color: #1F51FF; 
+  background-color: #fafafa; 
   color: white;
   border: none;
   border-radius: 8px; 
@@ -159,15 +168,75 @@
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
+.filterbutton{
+  z-index: 1000; 
+  background-color: #fafafa; 
+}
+.filtericon{
+
+}
 
 @media screen and (max-width: 450px) {
+  .main{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-end ;
+    margin-right: 5px;
+  }
+  .mapbuttons{
+    position: relative;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: fit-content;
+    background-color: white;
+    width: fit-content;
+   
+  }
   .showbutton{
       font-size:13px;
+      gap: 5px;
       font-weight: normal;
       margin: 2px;
-      font-family: "Noto Sans", sans-serif;
+      border-radius: 40px;
+      border: 1px solid rgb(161, 147, 147);
+      color: black;
+      font-family: "Mulish", sans-serif;
       padding: 8px;
+      margin: 4px;
+      margin-right: 0;
   }
+  .filterbutton{
+    font-size:13px;
+    font-weight: normal;
+    margin: 2px;
+    border-radius: 40px;
+    border: 1px solid rgb(161, 147, 147);
+    color: black;
+    font-family: "Mulish", sans-serif;
+    padding: 8px;
+    align-items: center;
+    padding: 8px;
+    margin: 4px;
+    margin-right: 5px;
+  }
+  .filtericon img{
+    width: 11px;
+    height: 11px;
+    align-items: center;
+    justify-content: center;
+    padding-left: 3px;
+    align-content: center;
+    position: relative;
+    bottom: -2px;
+    padding-right: 3px;
+    
+  }
+
   .marker-cluster {
     transition: transform 0.5s ease-in-out;
   }
@@ -198,14 +267,16 @@
     flex-direction: column;
     width: auto;
     height: 100%;
+    z-index: 1000;
   }
   
   .map-container {
-    height: 500px;
+    height: 710px;
     width: auto;
     margin-top: 3px;
     padding-left: 0;
     border-radius: 5px;
+    z-index: -1;
   }
 
   .leaflet-popup {
@@ -342,6 +413,8 @@
   }
   .secondpart{
     padding: 0;
+    background: transparent;
+    
   }
   .leaflet-popup-content-wrapper {
     padding: 10px; 

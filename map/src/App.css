@@ -1,0 +1,31 @@
+@media screen and (max-width: 450px) {
+    .appmain{
+        position: fixed;
+    }
+    .title{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        height: 90px;
+        position: static !important;;
+        position: fixed;
+    }
+    .title h2{
+        font-size: 18px;
+        font-weight: 400px;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        text-align: center;
+        align-content: center;
+        color: #1c1b1b;
+        font-family: "Tiro Devanagari Hindi", serif;
+        padding-right: 5px;
+    }
+    .logo{
+        height: 90px;
+        width: 150px;
+        top: 84.45px;
+        left: 1px;
+    }
+}

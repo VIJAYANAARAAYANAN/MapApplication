@@ -45,22 +45,26 @@
         width: 50%;
         font-size: 15px;
         z-index: 2000;
+        font-family: "Mulish", sans-serif;
+        border-radius: 5px;
+        border: 1px solid black;
     }
 
     .filter-button {
         width: auto;
         padding: 10px;
-        background-color: #1f51ff; /* Match the color scheme */
-        color: white;
-        border: none;
+        background-color: #ffffff; /* Match the color scheme */
+        color: black;
+        border: 1px solid black;
         border-radius: 8px;
         margin-left: 10px;
-        font-family: "Noto Sans", sans-serif;
-        font-weight: 500;
+        font-family: "Mulish", sans-serif;
+        font-weight: 600;
         margin-bottom: 5px;
         font-size: 13px;
         cursor: pointer;
         transition: background-color 0.3s;
+        border-radius: 40px;
     }
 
     .filter-button:hover {
@@ -69,7 +73,7 @@
     .seller-details {
         padding: 5px;
     }
-    .popup-close-button {
+    .filterpopup-close-button {
         margin-top: 0px;
         background-color: #FF3B3F;
         color: white;

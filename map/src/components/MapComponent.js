@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import close from '../assets/closebutton.png';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import L from 'leaflet';
 import 'leaflet.markercluster';
@@ -9,6 +9,8 @@ import { CarouselComponent } from './CarouselHelper';
 import './MapComponent.css';
 import './popup.css';
 import UserLocationMarker from './UserLocationMarker'; // Import the new component
+
+import filtericon from '../assets/filter.png';
 //import FilterComponent from './FilterComponent';
 // Define custom icons
 const customIcon = L.icon({
@@ -44,6 +46,7 @@ const getDistance = (lat1, lon1, lat2, lon2) => {
 const OutsidePopupComponent = ({ seller, onClose }) => {
   if (!seller) return null;
 
+  // Prepare image rows for display
   const imageRows = [];
   for (let i = 0; i < seller.product_images.length; i += 4) {
     imageRows.push(
@@ -55,35 +58,40 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
     );
   }
 
-  // Split categories and take the first two
-  const categoriesArray = seller.category_name.split(',').map(category => category.trim());
-  const displayedCategories = categoriesArray.slice(0, 2);
+  // Get the first category from the list
+  const firstCategory = seller.category_name.split(',')[0].trim();
 
   return (
     <div className="outside-popup">
       <button className="popup-close-button" onClick={onClose}>
-        X
+         <img src={close} alt='close' />
       </button>
       <h2>
         <a href={seller.seller_url} target="_blank" rel="noopener noreferrer">
-          {seller.seller_name}
-          <span style={{color: 'grey', fontSize: 15}}>
-            {seller.distance !== undefined && ` (${seller.distance.toFixed(2)} km)`}
-          </span>
+          {seller.seller_name} <span style={{fontSize:18}}>({seller.product_count} products)</span>
         </a>
       </h2>
+      <div className='subinfo-div'>
+      <span className='distancevalue'>
+        {seller.distance !== undefined && `${seller.distance.toFixed(2)} km`}
+      </span>
+      <p className='dot'>.</p>
       <p>
-        ({displayedCategories.join(', ')}{displayedCategories.length < categoriesArray.length && '...'}) - {seller.seller_city}
+        {firstCategory}
       </p>
+      <p className='dot'>.</p>
+      </div>
+      
       <div className="image-grid">
-        {imageRows}
+        <a className= "image-grid" href={seller.seller_url} target="_blank" rel="noopener noreferrer" >{imageRows}</a>
       </div>
       <div className="see-more-container">
-        <a href={seller.seller_url} target="_blank" rel="noopener noreferrer" className="see-more-link">See More</a>
+       
       </div>
     </div>
   );
 };
+
 
 // Component for clustering markers
 const ClusteringMarkers = ({ customers, userLocation, showNearby, onMarkerClick }) => {
@@ -229,9 +237,16 @@ const MapComponent = ({ customers }) => {
     <div className="map-container-wrapper">
       {/* <FilterComponent/>  */}
       <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
+      <div className='main'>
+      <div className='mapbuttons'>
+      <div>
       <button className='showbutton' onClick={toggleNearby}>
-        {showNearby ? 'Show All Sellers' : 'Show Sellers Close to Me'}
+        {showNearby ? 'Show All' : 'Show less'}
       </button>
+      <button className='filterbutton'>Filter <span className='filtericon'><img src={filtericon}></img></span></button>
+      </div>
+      </div>
+      </div>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <ClusteringMarkers customers={customers} userLocation={userLocation} showNearby={showNearby} onMarkerClick={handleMarkerClick} />
         <MapViewAdjuster showNearby={showNearby} userLocation={userLocation} />

@@ -48,33 +48,40 @@
 
 @media screen and (max-width: 450px) {
     .outside-popup {
-        position: relative; /* Changed to relative */
-        bottom: 0;
-        right: 0;
-        width: auto;
-        margin: 0; 
-        top: auto; 
-        overflow-y: auto; 
+        position: absolute; 
+        left: 50%;
+        transform: translateX(-50%);
+        width: 95%;
         background: white;
         border: 1px solid #ddd;
-        height: auto;
         border-radius: 8px;
-        padding: 5px;
-        padding-top: 5px;
-        padding-left: 10px;
-        border-top-right-radius: 20px;
-        border-top-left-radius: 20px;
-    }
+        padding: 10px;
+        z-index: 2000; 
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-top-right-radius: 40px;
+        border-top-left-radius: 40px;
+        bottom: -30px;
+        padding-left: 20px;
+      }
+
     .popup-close-button {
         margin-top: 0px;
-        background-color: #FF3B3F;
+        background-color: #fff;
+        color: #121212;
+        font-size: 20px;
+        font-weight: 530;
+        line-height: 0.8;
        
+    }
+    .popup-close-button img{
+        width: 25px;
     }
     .outside-popup h2 {
         text-decoration: none;
         color: #1f51ff;
         padding-bottom: 0px;
         margin-bottom: 0;
+        margin-top: 10px;
     }
     .outside-popup p1{
         font-size: 17px;
@@ -87,14 +94,28 @@
     .outside-popup h2 a {
         display: inline-block;
         text-decoration: none; 
-        color: inherit; 
-        width: 89%;
-        font-size: 19px;
-        font-family: "Noto Sans", sans-serif;
+        color: #121212; 
+        width: 87%;
+        font-size: 20px;
+        padding-bottom: 10px;
+        font-family: "Mulish", sans-serif;
+        font-weight: 60px;
+        line-height: 21px;
+    }
+    .distancevalue{
+        font-size: 17px;
+        font-weight: 600;
+        font-family: "Mulish", sans-serif;
+        color: black;
+    }
+    .subinfo-div{
+        display: flex;
+        gap: 10px;
+        flex-direction: row;
     }
     .outside-popup p{
-        font-weight: 500;
-        font-size: 18px;
+        font-weight: 600;
+        font-size: 17px;
         padding-bottom: 1px;
         color: #1f1e1e;
         margin-top: 0;
@@ -109,10 +130,9 @@
     }
   
     .popup-image {
-        width: 100px;
-        height: 110px;
-        border: 1px solid grey;
-        border-radius: 9px;
+        width: 130px;
+        height: 190px;
+        border-radius: 0px;
     }
     .image-grid {
         margin-top: 10px;
@@ -120,13 +140,14 @@
         display: flex;
         flex-wrap: nowrap;
         gap: 10px;
-        border-radius: 5px;
+      
         margin-bottom: 10px;
     }
     
     .image-row {
         display: flex;
         gap: 10px;
+        flex-direction: row;
     }
     
 
