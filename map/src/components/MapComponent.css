@@ -153,6 +153,7 @@
   align-items: flex-end;
   border-radius: 40px;
   z-index: 1000;
+  padding: 5px;
 
 }
 .showbutton {
@@ -181,7 +182,7 @@
     display: flex;
     flex-direction: row;
     justify-content:flex-end ;
-    margin-right: 5px;
+    margin-right: 10px;
   }
   .mapbuttons{
     position: relative;
@@ -198,38 +199,38 @@
    
   }
   .showbutton{
-      font-size:13px;
+      font-size:15px;
       gap: 5px;
       font-weight: normal;
       margin: 2px;
       border-radius: 40px;
-      border: 1px solid rgb(161, 147, 147);
+      border: 1px solid #ddcfcf;
       color: black;
       font-family: "Mulish", sans-serif;
-      padding: 8px;
+      padding: 10px;
       margin: 4px;
       margin-right: 0;
   }
   .filterbutton{
-    font-size:13px;
+    font-size:15px;
     font-weight: normal;
     margin: 2px;
     border-radius: 40px;
-    border: 1px solid rgb(161, 147, 147);
+    border: 1px solid #ddcfcf;
     color: black;
     font-family: "Mulish", sans-serif;
     padding: 8px;
     align-items: center;
-    padding: 8px;
+    padding: 10px;
     margin: 4px;
     margin-right: 5px;
   }
   .filtericon img{
-    width: 11px;
-    height: 11px;
+    width: 14px;
+    height: 14px;
     align-items: center;
     justify-content: center;
-    padding-left: 3px;
+    padding-left: 9px;
     align-content: center;
     position: relative;
     bottom: -2px;

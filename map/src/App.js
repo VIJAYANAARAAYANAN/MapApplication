@@ -32,7 +32,7 @@ function App() {
       <img src="https://assets-cartesian.plotch.io/images/logo/craftsvilla-logo.png" alt="Description of the image" className='logo'/>
       <h2>आपका एआई वाणिज्य सहायक</h2>
       </div>
-      <FilterComponent customers={customers} onFilterChange={handleFilterChange} />
+      {/* <FilterComponent customers={customers} onFilterChange={handleFilterChange} /> */}
       <MapComponent customers={filteredSellers} />
     </div>
   );

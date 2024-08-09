@@ -48,7 +48,7 @@
 
 @media screen and (max-width: 470px) {
     .outside-popup {
-        position: absolute; 
+        position: fixed; /* Use fixed positioning to keep the popup at the bottom of the viewport */
         left: 50%;
         transform: translateX(-50%);
         width: 95%;
@@ -56,11 +56,12 @@
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 10px;
-        z-index: 2000; 
+        padding-bottom: 0;
+        z-index: 2000;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         border-top-right-radius: 40px;
         border-top-left-radius: 40px;
-        bottom: -30px;
+        bottom: 0; 
         padding-left: 20px;
       }
 
@@ -75,6 +76,7 @@
     }
     .popup-close-button img{
         width: 25px;
+        padding-right: 20px;
     }
     .outside-popup h2 {
         text-decoration: none;
@@ -97,14 +99,14 @@
         text-decoration: none; 
         color: #121212; 
         width: 87%;
-        font-size: 21px;
+        font-size: 16px;
         padding-bottom: 10px;
         font-family: "Mulish", sans-serif;
         line-height: 21px;
         font-weight: 700;
     }
     .distancevalue{
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 700;
         font-family: "Mulish", sans-serif;
         color: black;
@@ -116,12 +118,13 @@
     }
     .outside-popup p{
         font-weight: 700;
-        font-size: 18px;
+        font-size: 14px;
         padding-bottom: 1px;
         color: #1f1e1e;
         margin-top: 0;
         margin-bottom: 0;
         font-family: "Noto Sans", sans-serif;
+        text-decoration: none;
     }
 
     .map-container-wrapper {
@@ -131,8 +134,8 @@
     }
   
     .popup-image {
-        width: 130px;
-        height: 190px;
+        width: 177px;
+        height: 244px;
         border-radius: 0px;
     }
     .image-grid {
@@ -149,6 +152,84 @@
         display: flex;
         gap: 10px;
         flex-direction: row;
+    }
+    .image-info{
+        width: 177px;
+        padding-bottom: 10px;
+        text-decoration: none;
+    }
+    .image-info p3{
+        font-size: 13px;
+        color: #000000;
+        font-weight: 500;
+        font-family: "Mulish", sans-serif;
+        overflow-x: hidden;
+        text-overflow: hidden;
+    }
+    .image-info p{
+        font-size: 14px;
+        font-weight: 700;
+        color: #000000;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limits to two lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden; /* Hides the text overflow */
+        text-overflow: ellipsis;
+    }
+    .image-info p3{
+        font-size: 11px;
+        margin-top: 0;
+        line-height: 14px;
+        padding-top: 0;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        font-weight: 500;
+        font-family: "Mulish", sans-serif;
+    }
+    .prices{
+        display: flex;
+        flex-direction: row;
+        gap: 14px;
+        align-items: center;
+    }
+    .prices p1{
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 15px;
+        text-align: center;
+        font-family: "Mulish", sans-serif;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    .prices p2{
+        font-size: 11px;
+        font-weight: 400;
+        text-align: center;
+        font-family: "Mulish", sans-serif;
+        text-decoration: line-through  
+    }
+    .offer{
+        display: flex;
+        justify-content: center;
+        background-color: #FF6746;
+        border-radius: 30px;
+        text-align: center;
+        justify-content:center ;
+        padding: 3px;
+    }
+    .offer p3{
+        font-size: 11px;
+        color: #fff;;
+        padding-bottom: 5px;
+        font-weight: 700;
+        text-align: center;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        font-family: "Mulish", sans-serif;
+        text-align: center;
+        padding-left: 3px;
+        padding-right: 3px;
+        line-height: 12.55px;
     }
     
 

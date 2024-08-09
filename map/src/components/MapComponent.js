@@ -48,49 +48,68 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
 
   // Prepare image rows for display
   const imageRows = [];
+  const productCategories = seller.product_categories.split('|'); // Split categories into an array
+
+  const formatPrice = (price) => {
+    return parseFloat(price).toString().replace(/(\.\d*?[1-9])0+$/, '$1'); // Removes trailing zeros
+  };
+
   for (let i = 0; i < seller.product_images.length; i += 4) {
     imageRows.push(
       <div className="image-row" key={i}>
         {seller.product_images.slice(i, i + 4).map((image, index) => (
-          <img src={image} alt={`Product ${i + index + 1}`} key={index} className="popup-image" />
+          <div key={index} className="image-item">
+            <a href={seller.seller_url} target="_blank" rel="noopener noreferrer">
+              <img src={image} alt={`Product ${i + index + 1}`} className="popup-image" />
+            </a>
+            <div className="image-info">
+              <p>{seller.product_names[i + index]}</p>
+              <p3>{productCategories[i + index]}</p3> {/* Display the category */}
+              <div className='prices'>
+                <p1>₹{formatPrice(seller.product_sale_prices[i + index])}</p1>
+                <p2>₹{formatPrice(seller.product_mrps[i + index])}</p2>
+                <div className='offer'>
+                  <p3>41% OFF</p3>
+                </div>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     );
   }
 
   // Get the first category from the list
-  const firstCategory = seller.category_name.split(',')[0].trim();
+  const firstCategory = seller.seller_categories;
 
   return (
     <div className="outside-popup">
       <button className="popup-close-button" onClick={onClose}>
-         <img src={close} alt='close' />
+        <img src={close} alt='close' />
       </button>
       <h2>
         <a href={seller.seller_url} target="_blank" rel="noopener noreferrer">
-          {seller.seller_name} <span style={{fontSize:18}}>({seller.product_count} products)</span>
+          {seller.seller_name} <span style={{ fontSize: 18 }}>({seller.product_count} items)</span>
         </a>
       </h2>
       <div className='subinfo-div'>
-      <span className='distancevalue'>
-        {seller.distance !== undefined && `${seller.distance.toFixed(2)} km`}
-      </span>
-      <p className='dot'>.</p>
-      <p>
-        {firstCategory}
-      </p>
-      <p className='dot'>.</p>
+        <span className='distancevalue'>
+          {seller.distance !== undefined && `${seller.distance.toFixed(2)} km`}
+        </span>
+        <p className='dot'>.</p>
+        <p>{firstCategory}</p>
+  
       </div>
-      
+
       <div className="image-grid">
-        <a className= "image-grid" href={seller.seller_url} target="_blank" rel="noopener noreferrer" >{imageRows}</a>
-      </div>
-      <div className="see-more-container">
-       
+        {imageRows}
       </div>
     </div>
   );
 };
+
+
+
 
 
 // Component for clustering markers
