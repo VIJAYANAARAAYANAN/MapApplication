@@ -210,31 +210,38 @@
       padding: 10px;
       margin: 4px;
       margin-right: 0;
-  }
+      background-color: white;
+      transition: border-color 0.3s ease;
+}
+
+    .showbutton.show-all-active {
+      border-color: #629E58; 
+    }
   .filterbutton{
     font-size:15px;
     font-weight: normal;
     margin: 2px;
+    background-color: white;
     border-radius: 40px;
     border: 1px solid #ddcfcf;
     color: black;
     font-family: "Mulish", sans-serif;
-    padding: 8px;
     align-items: center;
     padding: 10px;
     margin: 4px;
     margin-right: 5px;
+    padding-left: 20px
   }
   .filtericon img{
     width: 14px;
     height: 14px;
     align-items: center;
     justify-content: center;
-    padding-left: 9px;
+    padding-left: 16px;
     align-content: center;
     position: relative;
     bottom: -2px;
-    padding-right: 3px;
+    padding-right: 7px;
     
   }
 

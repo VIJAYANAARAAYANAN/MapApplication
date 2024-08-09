@@ -54,6 +54,11 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
     return parseFloat(price).toString().replace(/(\.\d*?[1-9])0+$/, '$1'); // Removes trailing zeros
   };
 
+  const formatText = (text) => {
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  };
+
   for (let i = 0; i < seller.product_images.length; i += 4) {
     imageRows.push(
       <div className="image-row" key={i}>
@@ -63,8 +68,8 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
               <img src={image} alt={`Product ${i + index + 1}`} className="popup-image" />
             </a>
             <div className="image-info">
-              <p>{seller.product_names[i + index]}</p>
-              <p3>{productCategories[i + index]}</p3> {/* Display the category */}
+              <p>{formatText(seller.product_names[i + index])}</p>
+              <p3>{formatText(productCategories[i + index])}</p3> {/* Display the category */}
               <div className='prices'>
                 <p1>₹{formatPrice(seller.product_sale_prices[i + index])}</p1>
                 <p2>₹{formatPrice(seller.product_mrps[i + index])}</p2>
@@ -80,7 +85,8 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
   }
 
   // Get the first category from the list
-  const firstCategory = seller.seller_categories;
+  const firstCategory = formatText(productCategories[0]);
+  const formattedSellerName = formatText(seller.seller_name);
 
   return (
     <div className="outside-popup">
@@ -89,7 +95,7 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
       </button>
       <h2>
         <a href={seller.seller_url} target="_blank" rel="noopener noreferrer">
-          {seller.seller_name} <span style={{ fontSize: 18 }}>({seller.product_count} items)</span>
+          {formattedSellerName} <span style={{ fontSize: 18 }}>({seller.product_count} items)</span>
         </a>
       </h2>
       <div className='subinfo-div'>
@@ -98,7 +104,6 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
         </span>
         <p className='dot'>.</p>
         <p>{firstCategory}</p>
-  
       </div>
 
       <div className="image-grid">
@@ -107,9 +112,6 @@ const OutsidePopupComponent = ({ seller, onClose }) => {
     </div>
   );
 };
-
-
-
 
 
 // Component for clustering markers
@@ -207,7 +209,7 @@ const MapViewAdjuster = ({ showNearby, userLocation }) => {
 };
 
 // Main Map Component
-const MapComponent = ({ customers }) => {
+const MapComponent = ({ customers, onFilterButtonClick }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [showNearby, setShowNearby] = useState(true); // Set to true by default
   const [selectedSeller, setSelectedSeller] = useState(null);
@@ -253,32 +255,43 @@ const MapComponent = ({ customers }) => {
     setSelectedSeller(null);
   };
 
-  return (
-    <div className="map-container-wrapper">
-      <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
+  
+    return (
+      <div className="map-container-wrapper">
+        <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
         <div className='main'>
-          <div className='mapbuttons'>
-            <div>
-              <button className='showbutton' onClick={toggleNearby}>
-                {showNearby ? 'Show All' : 'Show less'}
-              </button>
-              <button className='filterbutton'>Filter <span className='filtericon'><img src={filtericon}></img></span></button>
-            </div>
+        <div className='mapbuttons'>
+          <div>
+            <button
+              className={`showbutton ${showNearby ? 'show-nearby-active' : 'show-all-active'}`}
+              onClick={toggleNearby}
+            >
+              {showNearby ? 'Show All' : 'Show Nearby'}
+            </button>
+            <button className='filterbutton' onClick={onFilterButtonClick}>
+              Filter 
+              <span className='filtericon'>
+                <img src={filtericon} alt="Filter icon" />
+              </span>
+            </button>
           </div>
         </div>
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <ClusteringMarkers customers={customers} userLocation={userLocation} showNearby={showNearby} onMarkerClick={handleMarkerClick} />
-        <MapViewAdjuster showNearby={showNearby} userLocation={userLocation} />
-        {userLocation && <UserLocationMarker userLocation={userLocation} />} {/* User location marker will be added automatically */}
-      </MapContainer>
-
-      <div className='secondpart'>
-        {selectedSeller && (
-          <OutsidePopupComponent seller={selectedSeller} onClose={handleClosePopup} />
-        )}
       </div>
-    </div>
-  );
-};
 
-export default MapComponent;
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <ClusteringMarkers customers={customers} userLocation={userLocation} showNearby={showNearby} onMarkerClick={handleMarkerClick} />
+          <MapViewAdjuster showNearby={showNearby} userLocation={userLocation} />
+          {userLocation && <UserLocationMarker userLocation={userLocation} />}
+        </MapContainer>
+  
+        <div className='secondpart'>
+          {selectedSeller && (
+            <OutsidePopupComponent seller={selectedSeller} onClose={handleClosePopup} />
+          )}
+        </div>
+      </div>
+    );
+  };
+  
+  export default MapComponent;
+  

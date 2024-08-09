@@ -1,107 +1,135 @@
 @media screen and (max-width: 470px) {
-    .filtered-sellers-popup {
+
+    .filter-container {
         position: absolute; 
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        max-height: 300px; /* Adjust height to fit your design */
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow-y: auto; 
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
+        top: 20%;
+        left: 50%; 
+        transform: translateX(-50%); 
+        z-index: 3000; 
+        width: 95%; 
+        background: white; 
+        border-radius: 8px; 
+        padding: 10px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        height: 70%;
+        border-radius: 30px 30px 0 0;
+        display: flex;
+        flex-direction: column;
     }
 
-    .dropboxes{
-        width: auto;
+    .filterclose {
         display: flex;
-        flex-direction: row;
-        gap: 5px;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 15px;
+    }
+    .filterclose img {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .filterheading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-family: "Mulish", sans-serif;
+        font-weight: 700;
+        margin-top: 0;
+    }
+
+    .filterheading h2 {
+        margin-top: 0;
+    }
+
+    .close-filter-button {
+        position: absolute;
+        background-color: transparent;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .dropboxes {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
         justify-content: space-around;
-        padding-left: 10px;
         padding-right: 10px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
     }
-    .searchbar{
-        width: auto;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-    .filter-container {
-        position: relative;
-        z-index: 2000;
-    }
-    
-    .filter-input {
-        border-radius: 8px;
-        margin-bottom: 10px;
-        font-size: 15px;
-        font-family: "Noto Sans", sans-serif;
-        z-index: 3000; 
-    }
-    
+
     .filter-select {
-        margin-bottom: 10px;
-        width: 50%;
-        font-size: 15px;
-        z-index: 2000;
+        width: 90%; /* Adjust width to fit side by side */
+        font-size: 13px;
+        z-index: 3000;
         font-family: "Mulish", sans-serif;
         border-radius: 5px;
-        border: 1px solid black;
+        font-weight: 400;
+        color: black;
+    }
+    .filter-select-category{
+        width: 90%; 
+        font-size: 13px;
+        z-index: 4000;
+        font-family: "Mulish", sans-serif;
+        border-radius: 5px;
+
+        font-weight: 400;
+        color: black;
+    }
+
+    .filter-buttons {
+        display: flex;
+        justify-content: space-between; 
+        align-items: center;
+        width: 100%; 
+        gap: 10px;
+        margin-top: auto; /* Push buttons to the bottom */
     }
 
     .filter-button {
-        width: auto;
+        flex: 1; /* Make buttons grow to fill available space */
         padding: 10px;
         background-color: #ffffff; /* Match the color scheme */
         color: black;
-        border: 1px solid black;
         border-radius: 8px;
-        margin-left: 10px;
         font-family: "Mulish", sans-serif;
         font-weight: 600;
-        margin-bottom: 5px;
         font-size: 13px;
         cursor: pointer;
         transition: background-color 0.3s;
-        border-radius: 40px;
+        border-radius: 5px;
+    }
+    .filter-button-close{
+        border: none;
+        width: 50%;
+        padding: 15px;
+        border: 1px solid rgb(187, 186, 186);
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "Mulish", sans-serif;
+        background-color: white;
+    }
+    .filter-button-apply{
+        border: none;
+        width: 50%;
+        padding: 15px;
+        background-color: #E19926;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "Mulish", sans-serif;
+    }
+
+    .button1, .button2 {
+        flex: 1; /* Make both buttons the same width */
     }
 
     .filter-button:hover {
-        background-color: #1a44d4; 
-    }
-    .seller-details {
-        padding: 5px;
-    }
-    .filterpopup-close-button {
-        margin-top: 0px;
-        background-color: #FF3B3F;
-        color: white;
-    }
-    .seller-details h2{
-        text-decoration: none;
-        color: #1f51ff;
-        padding-bottom: 0px;
-        margin-bottom: 0;
-        width: 88%;
-     
-    }
-
-    .seller-details h2 a{
-        display: inline-block;
-        text-decoration: none;
-        color: inherit;
-        width: 89%;
-        font-size: 23px;
-        font-family: "Noto Sans", sans-serif;
-    }
-    .seller-details p{
-        font-weight: 500;
-        font-size: 18px;
-        padding-bottom: 1px;
-        color: #1f1e1e;
-        margin-top: 0;
-        margin-bottom: 0;
-        font-family: "Noto Sans", sans-serif;
+        background-color: #1a44d4;
     }
 }
