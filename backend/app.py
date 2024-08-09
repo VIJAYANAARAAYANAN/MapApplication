@@ -61,7 +61,7 @@ def get_sellers():
             urls = seller['product_images'].split('|')
             valid_urls = [url for url in urls if validate_url(url)]
             seller['product_images'] = valid_urls[:20]
-            seller['seller_url'] = f"https://www.khojle.com{seller['seller_url']}"
+            seller['seller_url'] = f"http://www.craftsvilla.com{seller['seller_url']}"
 
         return jsonify(sellers)
     except mysql.connector.Error as err:

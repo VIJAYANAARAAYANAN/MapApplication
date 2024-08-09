@@ -176,7 +176,7 @@
 
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 470px) {
   .main{
     display: flex;
     flex-direction: row;

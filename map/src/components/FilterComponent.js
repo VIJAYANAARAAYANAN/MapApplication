@@ -13,10 +13,9 @@ const FilterComponent = ({ customers, onFilterChange }) => {
   // Fetch categories and cities from backend
   const fetchCategoriesAndCities = async () => {
     try {
-      const response = await axios.get('https://cartesian-erp.plotch.io/dashboard/api');
+      const response = await axios.get('http://127.0.0.1:5000/dashboard/api');
       const data = response.data;
       
-      // Split categories and remove duplicates
       const allCategories = data.flatMap(item => 
         item.category_name.split(',').map(category => category.trim())
       );

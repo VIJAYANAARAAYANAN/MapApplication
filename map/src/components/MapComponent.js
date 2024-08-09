@@ -190,8 +190,13 @@ const MapViewAdjuster = ({ showNearby, userLocation }) => {
 // Main Map Component
 const MapComponent = ({ customers }) => {
   const [userLocation, setUserLocation] = useState(null);
-  const [showNearby, setShowNearby] = useState(false);
+  const [showNearby, setShowNearby] = useState(true); // Set to true by default
   const [selectedSeller, setSelectedSeller] = useState(null);
+
+  // Fetch user location when the component mounts
+  useEffect(() => {
+    getUserLocation();
+  }, []);
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
@@ -212,9 +217,6 @@ const MapComponent = ({ customers }) => {
   };
 
   const toggleNearby = () => {
-    if (!showNearby) {
-      getUserLocation();
-    }
     setShowNearby(!showNearby);
   };
 
@@ -231,26 +233,24 @@ const MapComponent = ({ customers }) => {
   const handleClosePopup = () => {
     setSelectedSeller(null);
   };
- 
+
   return (
-    
     <div className="map-container-wrapper">
-      {/* <FilterComponent/>  */}
       <MapContainer center={[20.5937, 78.9629]} zoom={5} className="map-container">
-      <div className='main'>
-      <div className='mapbuttons'>
-      <div>
-      <button className='showbutton' onClick={toggleNearby}>
-        {showNearby ? 'Show All' : 'Show less'}
-      </button>
-      <button className='filterbutton'>Filter <span className='filtericon'><img src={filtericon}></img></span></button>
-      </div>
-      </div>
-      </div>
+        <div className='main'>
+          <div className='mapbuttons'>
+            <div>
+              <button className='showbutton' onClick={toggleNearby}>
+                {showNearby ? 'Show All' : 'Show less'}
+              </button>
+              <button className='filterbutton'>Filter <span className='filtericon'><img src={filtericon}></img></span></button>
+            </div>
+          </div>
+        </div>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <ClusteringMarkers customers={customers} userLocation={userLocation} showNearby={showNearby} onMarkerClick={handleMarkerClick} />
         <MapViewAdjuster showNearby={showNearby} userLocation={userLocation} />
-        {userLocation && <UserLocationMarker userLocation={userLocation} />} {/* Add UserLocationMarker here */}
+        {userLocation && <UserLocationMarker userLocation={userLocation} />} {/* User location marker will be added automatically */}
       </MapContainer>
 
       <div className='secondpart'>
@@ -261,6 +261,5 @@ const MapComponent = ({ customers }) => {
     </div>
   );
 };
-
 
 export default MapComponent;
